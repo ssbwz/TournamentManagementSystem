@@ -1,0 +1,132 @@
+﻿@page
+@model Website.Pages.User.RegisterModel
+@{
+}
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <form asp-page-handler="register" class="form-horizontal" id="RegisterationForm" method="post">
+        <h2>Players form</h2>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">First Name</label>
+            <div class="col-sm-9">
+                <input asp-for="newPlayer.FirstName" type="text" placeholder="First Name" class="form-control">
+                <span asp-validation-for="newPlayer.FirstName"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName" class="col-sm-3 control-label">Last Name</label>
+            <div class="col-sm-9">
+                <input asp-for="newPlayer.LastName" type="text" placeholder="Last Name" class="form-control">
+                <span asp-validation-for="newPlayer.LastName"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="birthDate" class="col-sm-3 control-label">Date of Birth*</label>
+            <div class="col-sm-9">
+                <input type="date" max="@Model.MaxDateTime" asp-for="newPlayer.BirthDate" class="form-control">
+                <span asp-validation-for="newPlayer.BirthDate"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Gender</label>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="radio-inline">
+                            <input type="radio" id="femaleRadio" asp-for="newPlayer.Gender" value="Female">Female
+                        </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="radio-inline">
+                            <input type="radio" id="maleRadio" asp-for="newPlayer.Gender" value="Male">Male
+                        </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="radio-inline">
+                            <input type="radio" id="otherRadio" asp-for="newPlayer.Gender" value="Other"> Other
+                        </label>
+                    </div>
+                    <span asp-validation-for="newPlayer.Gender"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="email" class="col-sm-3 control-label">Email* </label>
+            <div class="col-sm-9">
+                <input type="email" asp-for="newPlayer.Email" placeholder="Email" class="form-control">
+                <span asp-validation-for="newPlayer.Email"></span>
+                <a>@Model.EmailDuplication</a>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber" class="col-sm-3 control-label">Phone number* </label>
+            <div class="col-sm-9">
+                <input type="phoneNumber" asp-for="newPlayer.PhoneNumber" id="phoneNumber" placeholder="Phone number" class="form-control">
+                <span asp-validation-for="newPlayer.PhoneNumber"></span>
+                <a>@Model.PhoneNumberDuplication</a>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Username*</label>
+            <div class="col-sm-9">
+                <input type="text" asp-for="Username" placeholder="Username" class="form-control">
+                <span asp-validation-for="Username"></span>
+                 <a>@Model.UsernameDuplication</a>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Password*</label>
+            <div class="col-sm-9">
+                <input asp-for="Password" type="text" placeholder="Password" class="form-control">
+                <span asp-validation-for="Password"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Confirm Password*</label>
+            <div class="col-sm-9">
+                <input asp-for="ConfirmPassword" type="text" placeholder="Password" class="form-control">
+                <span asp-validation-for="ConfirmPassword"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Chosen association*</label>
+            <div class="col-sm-9">
+                <select asp-for="AssociationId" data-size="4">
+                    @foreach (var association in Model.Associations)
+                    {
+                        <option value="@association.Id">@association.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Sport preference*</label>
+            <div class="col-sm-9">
+                <select asp-for="newPlayer.SportPreference" data-size="4">
+                    <option value=""></option>
+                    <option value="Badminton">Badminton</option>
+                    <option value="PingPong">Ping pong</option>
+                </select>
+                <span asp-validation-for="newPlayer.SportPreference"></span>
+            </div>
+        </div>
+        <!-- /.form-group -->
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3">
+                <span class="help-block">*Required fields</span>
+            </div>
+        </div>
+        <a>@Model.Message</a>
+        <button type="submit" class="btn btn-primary btn-block">Register</button>
+    </form> <!-- /form -->
+</div> <!-- ./container -->
+@section Scripts
+    {
+<partial name="_ValidationScriptsPartial" />
+    }
+

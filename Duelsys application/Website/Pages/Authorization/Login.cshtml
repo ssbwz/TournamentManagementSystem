@@ -1,0 +1,45 @@
+﻿@page
+@model Website.Pages.Authorization.LoginModel
+@{
+}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <!-- Login Form -->
+        <form method="post" asp-page-handler="Login">
+            <h4>@Model.passedMessage</h4>
+            <span class="text-danger" asp-validation-for="UsernameField"></span>
+            <input type="text" id="login" class="fadeIn second" asp-for="UsernameField" placeholder="Username">
+            <span class="text-danger" asp-validation-for="PasswordField"></span>
+            <input type="password" id="password" asp-for="PasswordField" class="fadeIn third" placeholder="Password">
+            <input type="submit" class="fadeIn fourth" value="Log In">
+        </form>
+        <a class="underlineHover" href="~/User/Register">Don't have an account? Click and register</a>
+        @if (Model.DALExcptionHappened)
+        {
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>@Model.MessageTitle</strong>
+                @Model.MessageDescription
+            </div>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.MessageTitle) && !Model.DALExcptionHappened)
+        {
+            <div class="Info">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>@Model.MessageTitle</strong>
+                @Model.MessageDescription
+            </div>
+        }
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+            <a class="underlineHover" href="~/Authorization/ForgotPassword">Forgot Password?</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+<partial name="_ValidationScriptsPartial" />
+    }

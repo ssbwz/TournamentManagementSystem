@@ -1,0 +1,159 @@
+﻿@page
+@model DuelSysWebsite.Pages.Tournaments.TournamentModel
+@{
+}
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+<div class="TournamentContainer">
+    <div class="Tournament">
+        <div class="Tournamentparent">
+            <div class="Itemdiv1">
+                <div class="Itemdiv1parent">
+                    <div class="Itemdiv1parentdiv1"><h3>@Model.ShownTournament.TournamentShortInfo.Title</h3> </div>
+                    <div class="Itemdiv1parentdiv2">
+                        <div class="TournamentInfoContainer">
+                            <div class="TournamentInfodiv1"><a>@Model.ShownTournament.Description</a> </div>
+                            <div class="TournamentInfodiv2">
+                                <div class="TournamentInfodiv2Container">
+                                    <div class="TournamentInfodiv2div1">
+                                        Sport type: @Model.ShownTournament.TournamentShortInfo.SportType.ToString()
+                                    </div>
+                                    <div class="TournamentInfodiv2div2">Tournament system: @Model.ShownTournament.TournamentShortInfo.TournamentSystem.ToString()</div>
+                                    <div class="TournamentInfodiv2div3">Start date: @Model.ShownTournament.StartDate.ToString("dd/MM/yyyy") </div>
+                                    <div class="TournamentInfodiv2div4">End date: @Model.ShownTournament.EndDate.ToString("dd/MM/yyyy") </div>
+                                    <div class="TournamentInfodiv2div5">Maximum participants: @Model.ShownTournament.Requirement.MaxPlayers</div>
+                                    <div class="TournamentInfodiv2div6">Minimum participants: @Model.ShownTournament.Requirement.MinPlayers </div>
+                                </div>
+                            </div>
+
+                            <div class="TournamentInfodiv3">
+                                Street: @Model.ShownTournament.Location.Street
+                                <div class="locationParent">
+                                    <div class="locationParentdiv1">
+                                    </div>
+                                    <div class="locationParentdiv2">
+                                        Building number: @Model.ShownTournament.Location.BuidlingNum     Zipcode: @Model.ShownTournament.Location.ZipCode
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Itemdiv1parentdiv3">
+                        @if (Model.CanRegister && User.IsInRole("Player"))
+                        {
+                            <form asp-page-handler="register" method="post">
+                                <input type="submit" value="Register" />
+                                <input type="hidden" name="tournamentId" value="@Model.ShownTournament.TournamentShortInfo.Id" />
+                            </form>
+                            @if (!string.IsNullOrWhiteSpace(Model.MessageTitle))
+                            {
+                                <div class="Info">
+                                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                                    <strong>@Model.MessageTitle</strong>
+                                    @Model.MessageDescription
+                                </div>
+                            }
+                        }
+                        else if (User.IsInRole("Player"))
+                        {
+                            <h3>Registering is closed </h3>
+                        }
+                    </div>
+                </div>
+            </div>
+            @if (!Model.IsTournamentCancelled)
+            {
+                <div class="Itemdiv2">
+                    @if (Model.HasMatches)
+                    {
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Team away</th>
+                                    <th scope="col">Team home</th>
+                                    <th scope="col">result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var match in Model.TournamentMatches)
+                                {
+                                    <tr>
+                                        <th scope="row">@match.Id</th>
+                                        @if (match.TeamAway == null)
+                                        {
+                                            <td>Bye</td>
+                                        }
+                                        else
+                                        {
+                                            <td> @match.TeamAway.Name</td>
+                                        }
+                                        @if (match.TeamHome == null)
+                                        {
+                                            <td>Bye</td>
+                                        }
+                                        else
+                                        {
+                                            <td> @match.TeamHome.Name</td>
+                                        }
+                                        <td>@match.MatchResult</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <h1>There are no matches</h1>
+                    }
+                </div>
+                <div class="Itemdiv3">
+                    @if (Model.ShownTournament.IsDone)
+                    {
+                        <div class="Itemdiv3Container">
+                            <div class="Itemdiv3div1">
+
+                                <div class="Itemdiv3div1Container">
+                                    <div class="Itemdiv3div1div1">
+                                        Number of participants: @Model.ShownTournament.TournamentShortInfo.ParticipantsNum
+                                    </div>
+                                    <div class="Itemdiv3div1div2">
+                                        Number of matches: @if (Model.HasMatches)
+                                        {
+                                            @Model.TournamentMatches.Count()
+                                            ;
+                                        }
+                                        else
+                                        {
+                                            <a>0</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Itemdiv3div2">
+                                <div class="Itemdiv3div2Container">
+                                    <div class="Itemdiv3div2div1">Golden prize: @Model.ShownTournament.GoldenMedalTeam.Name </div>
+                                    <div class="Itemdiv3div2div2">Silver prize: @Model.ShownTournament.SilverMedalTeam.Name</div>
+                                    <div class="Itemdiv3div2div3">Bronze prize: @Model.ShownTournament.BronzeMedalTeam.Name</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <h2>
+                    Tournament is cancelled <br>
+                    <a> Sorry for the inconvenience, this tournament got cancelled because it doesn't reached the minimum requirement</a>
+                </h2>
+
+            }
+        </div>
+    </div>
+</div>

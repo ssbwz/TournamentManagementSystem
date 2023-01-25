@@ -1,0 +1,54 @@
+﻿@page
+@model DuelSysWebsite.Pages.Tournaments.TournamentsModel
+@{
+}
+
+<div class="TournamentsContainer">
+    <div class="TournamentDiv">
+        @if (Model.TournamentShortInfos != null)
+        {
+            @foreach (var tournamentInfo in Model.TournamentShortInfos)
+            {
+
+                <div class="TournamentShortContainer">
+                    <div class="parent">
+                        <div class="TournamentShortContainerdiv1">
+                            <h4>@tournamentInfo.Title</h4>
+                        </div>
+                        <div class="TournamentShortContainerdiv2">
+                            <div class="Itemdiv1-container">
+                                <div class="Itemdiv1-containerdiv1">Sport type: @tournamentInfo.SportType.ToString()</div>
+                                <div class="Itemdiv1-containerdiv2">Tournament system: @tournamentInfo.TournamentSystem.ToString() </div>
+                                <div class="Itemdiv1-containerdiv3">Registerd players: @tournamentInfo.ParticipantsNum.ToString() </div>
+                                <div class="Itemdiv1-containerdiv4">
+                                    <a href="/Tournaments/Tournament?id=@tournamentInfo.Id"> <input type="submit" value="View"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h2>Sorry there are no tournaments</h2>
+        }
+    </div>
+</div>
+
+<div class="switch-pages-container">
+    <input type="text" asp-for="PageNumber" disabled />
+    <form method="post" asp-page-handler="previousPage">
+        <div class="prepage">
+            <input type="submit" value="Previous" />
+            <input type="hidden" name="pageNumber" value="@Model.PageNumber" />
+        </div>
+    </form>
+    <form method="post" asp-page-handler="nextPage">
+        <div class="nexpage">
+            <input type="submit" value="Next" />
+            <input type="hidden" name="pageNumber" value="@Model.PageNumber" />
+        </div>
+    </form>
+
+</div>
